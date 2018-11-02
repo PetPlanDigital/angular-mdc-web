@@ -14,6 +14,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+
 import { toNumber, toBoolean, Platform } from '@angular-mdc/web/common';
 
 import { strings } from '@material/slider/constants';
@@ -51,7 +52,10 @@ export class MdcSliderChange {
       <div *ngIf="discrete" class="mdc-slider__pin">
         <span #pin class="mdc-slider__pin-value-marker"></span>
       </div>
-      <svg class="mdc-slider__thumb" width="21" height="21">
+      <svg #sliderThumb
+        class="mdc-slider__thumb"
+        width="21" height="21"
+        focusable="false">
         <circle cx="10.5" cy="10.5" r="7.875"></circle>
       </svg>
       <div class="mdc-slider__focus-ring"></div>
@@ -134,9 +138,10 @@ export class MdcSlider implements AfterViewInit, OnDestroy, ControlValueAccessor
   @Output() readonly input: EventEmitter<MdcSliderChange> = new EventEmitter<MdcSliderChange>();
 
   @ViewChild('thumbcontainer') thumbContainer: ElementRef<HTMLElement>;
+  @ViewChild('sliderThumb') _sliderThumb: ElementRef<HTMLElement>;
   @ViewChild('track') track: ElementRef<HTMLElement>;
   @ViewChild('pin') pinValueMarker: ElementRef;
-  @ViewChild('markercontainer') trackMarkerContainer: ElementRef;
+  @ViewChild('markercontainer') trackMarkerContainer: ElementRef<HTMLElement>;
 
   /** View -> model callback called when value changes */
   _onChange: (value: any) => void = () => { };
